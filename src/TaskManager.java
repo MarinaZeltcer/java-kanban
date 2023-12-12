@@ -9,9 +9,13 @@ public class TaskManager {
     public HashMap<Integer, Epic> epics = new HashMap<>();
 
     public Task createNewTask(Task task) {
-        task.setId(id++);
+        generateId();
         tasks.put(task.getId(), task);
         return task;
+    }
+
+    private Integer generateId() {
+        return id++;
     }
 
     public void removeAllTask() {
@@ -42,7 +46,7 @@ public class TaskManager {
 
 
     public Epic createNewEpic(Epic epic) {
-        epic.setId(id++);
+        generateId();
         epics.put(epic.getId(), epic);
         return epic;
     }
@@ -68,8 +72,10 @@ public class TaskManager {
     }
 
     public void updateEpic(Epic epic) {
-        epics.put(epic.getId(), epic);
-}
+        Epic updateEpic = epics.get(epic.getId());
+        updateEpic.setName(epic.getName());
+        updateEpic.setDescription(epic.getDescription());
+    }
 
     public Epic getEpicById(Integer id) {
         return epics.get(id);
@@ -78,10 +84,10 @@ public class TaskManager {
 
 
     public Subtask createNewSubTask(Subtask subtask) {
-        subtask.setId(id++);
+        generateId();
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
-        epic.getSubtaskId().add(subtask.getId());
+        epic.addSubtask(subtask);
         assignStatusEpic(epic.getId());
         return subtask;
     }
@@ -97,7 +103,7 @@ public class TaskManager {
     public void removeSubTaskById(Integer id) {
         Subtask subtask = subtasks.remove(id);
         Epic epic = epics.get(subtask.getEpicId());
-        epic.getSubtaskId().remove(id);
+        epic.removeSubtask(subtask);
         assignStatusEpic(epic.getId());
     }
 
@@ -154,8 +160,8 @@ public class TaskManager {
                 epic.setStatus(Status.IN_PROGRESS);
             }
 
-            }
-
         }
+
     }
+}
 
