@@ -1,8 +1,15 @@
+import model.Status;
+import model.Epic;
+import model.Subtask;
+import model.Task;
+import servise.InMemoryTaskManager;
+import servise.TaskManagerable;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager taskManager = new TaskManager();
+        TaskManagerable taskManager = new InMemoryTaskManager();
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         taskManager.createNewTask(task);
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км");
@@ -39,5 +46,11 @@ public class Main {
         subtask3.setStatus(Status.DONE);
         taskManager.updateSubtask(subtask3);
         System.out.println(epic2.getStatus());
+
+        taskManager.getTaskById(task.getId());
+        System.out.println(taskManager.getHistory());
+        taskManager.getEpicById(epic.getId());
+        System.out.println(taskManager.getHistory());
     }
+
 }
