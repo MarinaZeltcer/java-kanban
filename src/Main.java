@@ -2,14 +2,17 @@ import model.Status;
 import model.Epic;
 import model.Subtask;
 import model.Task;
+import servise.HistoryManager;
 import servise.InMemoryTaskManager;
 import servise.TaskManagerable;
+import servise.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManagerable taskManager = new InMemoryTaskManager();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager(historyManager);
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         taskManager.createNewTask(task);
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км");

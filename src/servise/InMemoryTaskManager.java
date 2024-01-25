@@ -6,13 +6,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManagerable {
+    HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
     Integer id = 1;
 
     public HashMap<Integer, Task> tasks = new HashMap<>();
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
     public HashMap<Integer, Epic> epics = new HashMap<>();
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+
 
     @Override
     public ArrayList<Task> getHistory() {
