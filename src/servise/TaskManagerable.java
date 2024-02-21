@@ -3,12 +3,12 @@ package servise;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-
+import java.util.List;
 import java.util.ArrayList;
 
 public interface TaskManagerable {
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
     Task createNewTask(Task task);
 
     Integer generateId();

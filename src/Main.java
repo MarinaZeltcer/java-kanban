@@ -2,10 +2,7 @@ import model.Status;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-import servise.HistoryManager;
-import servise.InMemoryTaskManager;
-import servise.TaskManagerable;
-import servise.Managers;
+import servise.*;
 
 public class Main {
 
@@ -54,6 +51,9 @@ public class Main {
         System.out.println(taskManager.getHistory());
         taskManager.getEpicById(epic.getId());
         System.out.println(taskManager.getHistory());
+
+        System.out.println(taskManager.getAllEpics());
     }
+
 
 }
