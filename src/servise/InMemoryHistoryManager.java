@@ -4,17 +4,13 @@ import model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiConsumer;
-
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
     public Node first;
     public Node last;
-    public HashMap<Integer, Node> historyReferences = new HashMap<>();
-
-
+    public Map<Integer, Node> historyReferences = new HashMap<>();
 
     private void linkLast(Task task) {
         final Node oldLast = last;
@@ -27,7 +23,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
     }
-
 
     private void removeNode(Node removedNode) {
         Node prevNode = removedNode.prev;//Получаю предыдущий:
@@ -55,7 +50,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
-
     @Override
     public void add(Task task) {
         if (task != null) {
@@ -64,7 +58,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             historyReferences.put(task.getId(), last);
         }
     }
-
 
     @Override
     public List<Task> getHistory() {
@@ -79,7 +72,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             historyReferences.remove(id);
         }
     }
-
 
     public static class Node {
         public Task data;

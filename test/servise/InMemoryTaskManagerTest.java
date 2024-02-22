@@ -95,7 +95,7 @@ class InMemoryTaskManagerTest {
             taskManager.getTaskById(2);
             assertEquals(2, taskManager.getHistory().size());
         }
-        
+
 
         // Вспомогательный метод. Просто создаю 10 задач
         private void createTenTasks () {
