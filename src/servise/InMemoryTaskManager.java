@@ -4,6 +4,7 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManagerable {
     HistoryManager historyManager;
@@ -21,7 +22,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
@@ -45,6 +46,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void removeTaskById(Integer id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -86,6 +88,7 @@ public class InMemoryTaskManager implements TaskManagerable {
         Epic epic = epics.remove(id);
         for (Integer i : epic.getSubtaskId()) {
             subtasks.remove(i);
+            historyManager.remove(id);
         }
     }
 
@@ -140,6 +143,7 @@ public class InMemoryTaskManager implements TaskManagerable {
         Epic epic = epics.get(subtask.getEpicId());
         epic.removeSubtask(subtask);
         assignStatusEpic(epic.getId());
+        historyManager.remove(id);
     }
 
     @Override

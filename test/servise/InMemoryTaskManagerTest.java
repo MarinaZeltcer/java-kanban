@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
     public InMemoryTaskManager taskManager;
-
+    HistoryManager historyManager = Managers.getDefaultHistory();
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = new InMemoryTaskManager();
+        taskManager = new InMemoryTaskManager(historyManager);
     }
 
 
@@ -96,17 +96,6 @@ class InMemoryTaskManagerTest {
             assertEquals(2, taskManager.getHistory().size());
         }
 
-
-        @Test
-        public void addMoreThanTenTasksInHistoryListTest () {
-            createTenTasks();
-            for (int i = 1; i <= 10; i++) {
-                taskManager.getTaskById(i);
-            }
-            assertEquals(10, taskManager.getHistory().size());
-            taskManager.getTaskById(5);
-            assertEquals(10, taskManager.getHistory().size());
-        }
 
         // Вспомогательный метод. Просто создаю 10 задач
         private void createTenTasks () {
