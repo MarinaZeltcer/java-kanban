@@ -6,6 +6,7 @@ import model.Task;
 import java.util.List;
 import java.util.ArrayList;
 
+
 public interface TaskManagerable {
 
     List<Task> getHistory();

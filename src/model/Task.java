@@ -8,12 +8,9 @@ public class Task {
     private Status status = Status.NEW;
     private Integer id;
 
-
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-
-
     }
 
     public void setId(Integer id) {
@@ -59,5 +56,13 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, status, id);
+    }
+    @Override
+    public String toString() {
+        return  id + "," +
+                TasksTypes.TASK + "," +
+                name + "," +
+                status + "," +
+                description;
     }
 }

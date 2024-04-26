@@ -1,5 +1,9 @@
 package servise;
 
+/*
+ * Писал об этом в классе FileBackedTaskManager.
+ * */
+
 import model.*;
 
 import java.util.ArrayList;
@@ -7,18 +11,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManagerable {
-    HistoryManager historyManager;
 
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
-    }
+
+    HistoryManager historyManager=Managers.getDefaultHistory();
 
     Integer id = 1;
 
     public HashMap<Integer, Task> tasks = new HashMap<>();
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
     public HashMap<Integer, Epic> epics = new HashMap<>();
-
 
 
     @Override
@@ -117,7 +118,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public Subtask createNewSubTask(Subtask subtask) {
-        Epic epic = epics.get(subtask.getEpicId());
+        Epic epic = epics.get(subtask.getepicIds());
         if (epic == null) {
             return null;
         }
@@ -140,7 +141,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void removeSubTaskById(Integer id) {
         Subtask subtask = subtasks.remove(id);
-        Epic epic = epics.get(subtask.getEpicId());
+        Epic epic = epics.get(subtask.getepicIds());
         epic.removeSubtask(subtask);
         assignStatusEpic(epic.getId());
         historyManager.remove(id);
@@ -158,7 +159,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void updateSubtask(Subtask subtask) {
         subtasks.put(subtask.getId(), subtask);
-        assignStatusEpic(subtask.getEpicId());
+        assignStatusEpic(subtask.getepicIds());
 
     }
 
