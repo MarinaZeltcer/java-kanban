@@ -21,4 +21,13 @@ public class Epic extends Task {
     public void removeSubtask(Subtask subtask) {
         subtaskIds.remove(subtask.getId());
     }
+    @Override
+    public String toString() {
+        return  getId() + "," +
+                TasksTypes.EPIC + "," +
+                getName() + "," +
+                getStatus() + "," +
+                getDescription();
+    }
+
 }
