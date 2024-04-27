@@ -5,15 +5,15 @@ import model.*;
 import java.io.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    File file;
 
+    File file;
     public FileBackedTaskManager(File file) {
-        this.file = file;
+        this.file =file;
     }
 
-    private  void save() {
+    protected void save() {
         String firstStr = "id,type,name,status,description,epic\n";
-        try (Writer fileWriter = new FileWriter("task.csv")) {
+        try (Writer fileWriter = new FileWriter(file)) {
 
             fileWriter.write(firstStr);
             for (Task allTask : getAllTasks()) {
@@ -55,7 +55,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
-            String line = br.readLine();
+            String line=br.readLine();
             line = br.readLine();
 
             while (!line.isBlank()) {
@@ -79,6 +79,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 line = br.readLine();
             }
             line = br.readLine();
+            if (line!=null){
             String[] split = line.split(",");
             for (String str : split) {
                 Integer key = Integer.parseInt(str);
@@ -91,7 +92,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (manager.epics.containsKey(key)) {
                     manager.historyManager.add(manager.epics.get(key));
                 }
-            }
+            }}
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при чтении файла");
         }
