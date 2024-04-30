@@ -18,8 +18,7 @@ class FileBackedTaskManagerTest {
 
     @Test
     void shouldBeAnEmptyObjectFromAnEmptyFile() throws IOException{
-
-        FileBackedTaskManager manager = new FileBackedTaskManager(File.createTempFile("data", null));
+        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(),File.createTempFile("data", null));
         ArrayList<Task> tasks= manager.getAllTasks();
         ArrayList<Subtask> subtasks= manager.getAllSubtasks();
         ArrayList<Epic> epics= manager.getAllEpics();
@@ -31,7 +30,7 @@ class FileBackedTaskManagerTest {
     @Test
     void writingAndReadingAFileTest() throws IOException {
         File file = new File("data");
-        FileBackedTaskManager manager = new FileBackedTaskManager(file);
+        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(),file);
 
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         manager.createNewTask(task);

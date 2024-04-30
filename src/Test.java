@@ -2,6 +2,7 @@ import model.Epic;
 import model.Subtask;
 import model.Task;
 import servise.FileBackedTaskManager;
+import servise.Managers;
 import servise.TaskManagerable;
 
 import java.io.File;
@@ -13,7 +14,7 @@ public class Test {
         /*
          * Проверяем запись в файл.
          * */
-        TaskManagerable manager = new FileBackedTaskManager(new File("test.csv"));
+        TaskManagerable manager = new FileBackedTaskManager(Managers.getDefaultHistory(),new File("task.csv"));
 
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         manager.createNewTask(task);
@@ -47,6 +48,7 @@ public class Test {
         manager.getSubtaskById(7);
         manager.getTaskById(2);
 
+
         /*
          * Проверяем чтение из файла.
          * */
@@ -58,5 +60,9 @@ public class Test {
         System.out.println(restoredManager.getAllEpics());
         System.out.println(restoredManager.getAllSubtasks());
         System.out.println(restoredManager.getHistory());
+        Subtask subtask4 = new Subtask("Взять зажигалкк", "Газовый балончик", epic2.getId());
+        restoredManager.createNewSubTask(subtask4);
+        System.out.println(subtask4.getId());
+
     }
 }

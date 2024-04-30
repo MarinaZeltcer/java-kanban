@@ -9,9 +9,13 @@ import java.util.List;
 public class InMemoryTaskManager implements TaskManagerable {
 
 
-    HistoryManager historyManager=Managers.getDefaultHistory();
+    HistoryManager historyManager;
 
-    Integer id = 1;
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
+    private Integer id = 1;
 
     public HashMap<Integer, Task> tasks = new HashMap<>();
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -206,5 +210,13 @@ public class InMemoryTaskManager implements TaskManagerable {
 
         }
 
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

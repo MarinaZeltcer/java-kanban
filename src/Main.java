@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         HistoryManager historyManager = Managers.getDefaultHistory();
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager(historyManager );
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         taskManager.createNewTask(task);
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км");
@@ -55,8 +55,7 @@ public class Main {
         System.out.println(taskManager.getHistory());
 
         System.out.println(taskManager.getAllEpics());
-        FileBackedTaskManager re = new FileBackedTaskManager(new File("resourses/task.csv"));
-        System.out.println(re);
+
 
     }
 

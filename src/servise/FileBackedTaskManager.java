@@ -7,8 +7,10 @@ import java.io.*;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     File file;
-    public FileBackedTaskManager(File file) {
-        this.file =file;
+
+    public FileBackedTaskManager(HistoryManager historyManager, File file) {
+        super(historyManager);
+        this.file = file;
     }
 
     protected void save() {
@@ -51,7 +53,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTaskManager loadFromFile(String filename) throws IOException {
-        FileBackedTaskManager manager = new FileBackedTaskManager(new File(filename));
+        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(),new File(filename));
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
@@ -62,19 +64,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
                 String[] split = line.split(",");
                 Task task = fromString(split);
-
+                Integer newId = Integer.parseInt(split[0]);
                 if ("SUBTASK".equals(split[1])) {
                     Subtask subtask = (Subtask) task;
-                    manager.createNewSubTask(subtask);
+                    manager.subtasks.put(newId, subtask);
+                    if (manager.getId() < newId) {
+                        manager.setId(newId + 1);
+                    }
+
                     Epic epic = manager.epics.get(subtask.getepicIds());
                     epic.addSubtask(subtask);
                 }
                 if ("EPIC".equals(split[1])) {
-                    manager.createNewEpic((Epic) task);
+                    manager.epics.put(newId,(Epic) task);
+                    if(manager.getId()<newId){
+                        manager.setId(newId + 1);
+                    }
                 }
                 if ("TASK".equals(split[1])) {
-
-                    manager.createNewTask(task);
+                    manager.tasks.put(newId,task);
+                    if(manager.getId()<newId){
+                        manager.setId(newId + 1);
+                    }
                 }
                 line = br.readLine();
             }
@@ -102,6 +113,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Task createNewTask(Task task) {
+
         Task newTask = super.createNewTask(task);
         save();
         return newTask;
