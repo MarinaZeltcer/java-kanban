@@ -1,0 +1,6 @@
+id,type,name,status,description,epic
+1,TASK,Похудеть к лету.,NEW,Сбросить 5 кг.
+2,EPIC,Переезд.,NEW,Сьехать в свой дом.
+3,SUBTASK,Собрать коробки,NEW,С подписями,2
+
+1,

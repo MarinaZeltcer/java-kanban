@@ -4,12 +4,14 @@ import model.Subtask;
 import model.Task;
 import servise.*;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) {
 
         HistoryManager historyManager = Managers.getDefaultHistory();
-        InMemoryTaskManager taskManager = new InMemoryTaskManager(historyManager);
+        InMemoryTaskManager taskManager = new InMemoryTaskManager(historyManager );
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
         taskManager.createNewTask(task);
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км");
@@ -47,13 +49,16 @@ public class Main {
         taskManager.updateSubtask(subtask3);
         System.out.println(epic2.getStatus());
 
-        taskManager.getTaskById(task.getId());
+
         System.out.println(taskManager.getHistory());
         taskManager.getEpicById(epic.getId());
         System.out.println(taskManager.getHistory());
 
         System.out.println(taskManager.getAllEpics());
+
+
     }
+
 
 
 }
