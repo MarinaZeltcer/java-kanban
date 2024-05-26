@@ -1,17 +1,25 @@
 package servise;
 
 import model.Epic;
+import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+
+import static java.util.Calendar.FEBRUARY;
+import static java.util.Calendar.MAY;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
     public InMemoryTaskManager taskManager;
     HistoryManager historyManager = Managers.getDefaultHistory();
+
 
     @BeforeEach
     public void beforeEach() {
@@ -121,4 +129,63 @@ class InMemoryTaskManagerTest {
                 taskManager.createNewSubTask(subtask);
             }
         }
+    @Test
+    public void shouldUpdateTaskStatusToInProgress() {
+        Task task = new Task("велопробег","купить велосипед", Duration.ofMinutes(4), LocalDateTime.of(2222, MAY, 2, 22, 22));
+        taskManager.createNewTask(task);
+        task.setStatus(Status.IN_PROGRESS);
+        taskManager.updateTask(task);
+        assertEquals(Status.IN_PROGRESS, taskManager.getTaskById(task.getId()).getStatus());
+    }
+
+    @Test
+    public void shouldUpdateEpicStatusToInProgress() {
+        Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
+        taskManager.createNewEpic(epic);
+        epic.setStatus(Status.IN_PROGRESS);
+        assertEquals(Status.IN_PROGRESS, taskManager.getEpicById(epic.getId()).getStatus());
+    }
+
+    @Test
+    public void shouldUpdateSubtaskStatusToInProgress() {
+        Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
+        taskManager.createNewEpic(epic);
+        Subtask subtask = new Subtask("Взять гитару", "Аккустическую",Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());;
+        taskManager.createNewSubTask(subtask);
+        subtask.setStatus(Status.IN_PROGRESS);
+        taskManager.updateSubtask(subtask);
+        assertEquals(Status.IN_PROGRESS, taskManager.getSubtaskById(subtask.getId()).getStatus());
+        assertEquals(Status.IN_PROGRESS, taskManager.getEpicById(epic.getId()).getStatus());
+    }
+
+    @Test
+    public void shouldUpdateTaskStatusToInDone() {
+        Task task = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км",Duration.ofMinutes(15),LocalDateTime.of(2222, FEBRUARY, 15, 22, 22));
+        taskManager.createNewTask(task);
+        task.setStatus(Status.DONE);
+        taskManager.updateTask(task);
+        assertEquals(Status.DONE, taskManager.getTaskById(task.getId()).getStatus());
+    }
+
+    @Test
+    public void shouldUpdateEpicStatusToInDone() {
+        Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
+        taskManager.createNewEpic(epic);
+        epic.setStatus(Status.DONE);
+        assertEquals(Status.DONE, taskManager.getEpicById(epic.getId()).getStatus());
+    }
+
+    @Test
+    public void shouldUpdateSubtaskStatusToInDone() {
+        Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
+        taskManager.createNewEpic(epic);
+        Subtask subtask = new Subtask("Взять гитару", "Аккустическую",Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());;
+        taskManager.createNewSubTask(subtask);
+        subtask.setStatus(Status.DONE);
+        taskManager.updateSubtask(subtask);
+        assertEquals(Status.DONE, taskManager.getSubtaskById(subtask.getId()).getStatus());
+        assertEquals(Status.DONE, taskManager.getEpicById(epic.getId()).getStatus());
+    }
+
+
     }

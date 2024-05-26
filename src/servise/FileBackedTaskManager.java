@@ -3,6 +3,8 @@ package servise;
 import model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
@@ -11,7 +13,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    private  void save() {
+    void save() {
         String firstStr = "id,type,name,status,description,epic\n";
         try (Writer fileWriter = new FileWriter("task.csv")) {
 
@@ -35,11 +37,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-
     private static Task fromString(String[] split) {
         Task task;
         if ("SUBTASK".equals(split[1])) {
-            task = new Subtask(split[2], split[4], Integer.parseInt(split[5]));
+            task = new Subtask(split[2], split[4], Integer.parseInt(split[7]));
         } else if ("EPIC".equals(split[1])) {
             task = new Epic(split[2], split[4]);
         } else {
@@ -47,6 +48,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         task.setId(Integer.parseInt(split[0]));
         task.setStatus(Status.valueOf(split[3]));
+        task.setDuration(Duration.ofMinutes(Long.parseLong(split[5])));
+        task.setStartTime(LocalDateTime.parse(split[6]));
         return task;
     }
 
@@ -67,7 +70,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     Subtask subtask = (Subtask) task;
                     manager.subtasks.put(task.getId(), subtask);
                     Epic epic = manager.epics.get(subtask.getepicIds());
-                    epic.addSubtaskToEpic(subtask);
+                    epic.addSubtask(subtask);
                 }
                 if ("EPIC".equals(split[1])) {
                     manager.epics.put(task.getId(), (Epic) task);

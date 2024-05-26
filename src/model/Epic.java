@@ -1,5 +1,5 @@
 package model;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -11,15 +11,11 @@ public class Epic extends Task {
         super(name, description);
     }
 
-
     public ArrayList<Integer> getSubtaskId() {
         return subtaskIds;
     }
 
-    /*
-    * Что ж ты не сказала, что у тебя уже есть метод, который добавляет в subtaskIds id подзадачи?)
-    * Это отменяет необходимость в методе addSubtaskToEpic, поскольку они одинаковые.
-    * */
+
     public void addSubtask(Subtask subtask) {
         subtaskIds.add(subtask.getId());
     }
@@ -27,15 +23,22 @@ public class Epic extends Task {
     public void removeSubtask(Subtask subtask) {
         subtaskIds.remove(subtask.getId());
     }
+
     @Override
     public String toString() {
-        return  getId() + "," +
+        return getId() + "," +
                 TasksTypes.EPIC + "," +
                 getName() + "," +
                 getStatus() + "," +
-                getDescription();
+                getDescription() + "," +
+                getDuration().toMinutes() + "," +
+                getStartTime();
+
     }
-  public void addSubtaskToEpic(Subtask subtask){
-       subtaskIds.add(subtask.getId());
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return getStartTime().plusMinutes(getDuration().toMinutes());
     }
+
 }
