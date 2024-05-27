@@ -18,8 +18,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     public HashMap<Integer, Task> tasks = new HashMap<>();
     public HashMap<Integer, Subtask> subtasks = new HashMap<>();
     public HashMap<Integer, Epic> epics = new HashMap<>();
-    public TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime)
-            .thenComparing(Task::getId));
+    public TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.nullsLast(Comparator.comparing(Task::getStartTime).thenComparing(Task::getId)));
 
     @Override
     public List<Task> getHistory() {
@@ -35,7 +34,8 @@ public class InMemoryTaskManager implements TaskManagerable {
         } else {
             throw new RuntimeException("Задачи пересекаются");
 
-        }return task;
+        }
+        return task;
     }
 
     @Override
@@ -71,10 +71,11 @@ public class InMemoryTaskManager implements TaskManagerable {
     public void updateTask(Task task) {
         if ((intersectionAnyMatch(task))) {
             tasks.put(task.getId(), task);
-         } else {
-        throw new RuntimeException("Задачи пересекаются");
+        } else {
+            throw new RuntimeException("Задачи пересекаются");
 
-    }}
+        }
+    }
 
     @Override
     public Epic createNewEpic(Epic epic) {
@@ -171,7 +172,7 @@ public class InMemoryTaskManager implements TaskManagerable {
             assignStatusEpic(subtask.getepicIds());
             assignStartTime(epic);
             durationByEpic(subtask.getepicIds());
-        }else {
+        } else {
             throw new RuntimeException("Задачи пересекаются");
 
         }

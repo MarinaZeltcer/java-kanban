@@ -1,5 +1,6 @@
 package servise;
 
+import exceptions.ManagerSaveException;
 import model.*;
 
 import java.io.*;
@@ -69,6 +70,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if ("SUBTASK".equals(split[1])) {
                     Subtask subtask = (Subtask) task;
                     manager.subtasks.put(task.getId(), subtask);
+                    manager.prioritizedTasks.add(subtask);
                     Epic epic = manager.epics.get(subtask.getepicIds());
                     epic.addSubtask(subtask);
                 }
@@ -78,6 +80,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if ("TASK".equals(split[1])) {
 
                     manager.tasks.put(task.getId(), task);
+                    manager.prioritizedTasks.add(task);
                 }
                 line = br.readLine();
             }
