@@ -5,6 +5,8 @@ import model.Subtask;
 import model.Task;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
 
 public interface TaskManagerable {
 
@@ -54,4 +56,11 @@ public interface TaskManagerable {
     boolean checkNEW(Epic epic);
 
     void checkDONE(Epic epic);
+
+    TreeSet<Task> getPrioritizedTasks();
+
+
+    void durationByEpic(Integer EpicId);
+
+    void assignStartTime(Epic epic);
 }
