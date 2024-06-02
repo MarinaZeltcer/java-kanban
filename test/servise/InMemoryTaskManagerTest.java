@@ -6,11 +6,8 @@ import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MAY;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,21 +31,21 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void createNewEpicsTest () {
+    public void createNewEpicsTest() {
         createTenEpics();
         assertEquals(10, taskManager.epics.size());
     }
 
 
     @Test
-    public void createNewSubTaskTest () {
+    public void createNewSubTaskTest() {
         createTenSubtasks();
         assertEquals(10, taskManager.subtasks.size());
     }
 
 
     @Test
-    public void shouldBeEqualToEachOtherIfTheirIdIsEqual () {
+    public void shouldBeEqualToEachOtherIfTheirIdIsEqual() {
         createTenTasks();
         Task task1 = taskManager.getTaskById(5);
         Task task2 = taskManager.tasks.get(5);
@@ -59,7 +56,7 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    public void createNewSubTaskTestNonExistentEpic () {
+    public void createNewSubTaskTestNonExistentEpic() {
         Integer invalidEpicId = -6;
         Subtask subtask = new Subtask("Собрать коробки", "С подписями", invalidEpicId);
         taskManager.createNewSubTask(subtask);
@@ -68,7 +65,7 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    public void getTaskByIdTest () {
+    public void getTaskByIdTest() {
         Task task1 = new Task("task", "taskDesc");
         taskManager.createNewTask(task1);
         Task task2 = taskManager.getTaskById(task1.getId());
@@ -76,7 +73,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void getEpicByIdTest () {
+    public void getEpicByIdTest() {
         Epic epic1 = new Epic("epic", "epicDesc");
         taskManager.createNewEpic(epic1);
         Epic epic2 = taskManager.getEpicById(epic1.getId());
@@ -85,7 +82,7 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    public void getSubtaskByIdTest () {
+    public void getSubtaskByIdTest() {
         Epic epic = new Epic("Поход.", "С палатками, на озеро.");
         taskManager.createNewEpic(epic);
         Subtask subtask1 = new Subtask("Взять гитару", "Аккустическую", epic.getId());
@@ -96,7 +93,7 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    public void addFewTasksInHistoryListTest () {
+    public void addFewTasksInHistoryListTest() {
         createTenTasks();
         taskManager.getTaskById(1);
         assertEquals(1, taskManager.getHistory().size());
@@ -106,7 +103,7 @@ class InMemoryTaskManagerTest {
 
 
     // Вспомогательный метод. Просто создаю 10 задач
-    private void createTenTasks () {
+    private void createTenTasks() {
         for (int i = 0; i < 10; i++) {
             Task task = new Task("task" + i, "taskDesc" + i);
             taskManager.createNewTask(task);
@@ -129,9 +126,10 @@ class InMemoryTaskManagerTest {
             taskManager.createNewSubTask(subtask);
         }
     }
+
     @Test
     public void shouldUpdateTaskStatusToInProgress() {
-        Task task = new Task("велопробег","купить велосипед", Duration.ofMinutes(4), LocalDateTime.of(2222, MAY, 2, 22, 22));
+        Task task = new Task("велопробег", "купить велосипед", Duration.ofMinutes(4), LocalDateTime.of(2222, MAY, 2, 22, 22));
         taskManager.createNewTask(task);
         task.setStatus(Status.IN_PROGRESS);
         taskManager.updateTask(task);
@@ -150,7 +148,8 @@ class InMemoryTaskManagerTest {
     public void shouldUpdateSubtaskStatusToInProgress() {
         Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
         taskManager.createNewEpic(epic);
-        Subtask subtask = new Subtask("Взять гитару", "Аккустическую",Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());;
+        Subtask subtask = new Subtask("Взять гитару", "Аккустическую", Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());
+        ;
         taskManager.createNewSubTask(subtask);
         subtask.setStatus(Status.IN_PROGRESS);
         taskManager.updateSubtask(subtask);
@@ -160,7 +159,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void shouldUpdateTaskStatusToInDone() {
-        Task task = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км",Duration.ofMinutes(15),LocalDateTime.of(2222, FEBRUARY, 15, 22, 22));
+        Task task = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км", Duration.ofMinutes(15), LocalDateTime.of(2222, FEBRUARY, 15, 22, 22));
         taskManager.createNewTask(task);
         task.setStatus(Status.DONE);
         taskManager.updateTask(task);
@@ -179,7 +178,8 @@ class InMemoryTaskManagerTest {
     public void shouldUpdateSubtaskStatusToInDone() {
         Epic epic = new Epic("Прыжок с парашютом.", "Без сопровождения.");
         taskManager.createNewEpic(epic);
-        Subtask subtask = new Subtask("Взять гитару", "Аккустическую",Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());;
+        Subtask subtask = new Subtask("Взять гитару", "Аккустическую", Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());
+        ;
         taskManager.createNewSubTask(subtask);
         subtask.setStatus(Status.DONE);
         taskManager.updateSubtask(subtask);
