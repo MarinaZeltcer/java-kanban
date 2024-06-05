@@ -3,16 +3,23 @@ package servise;
 import model.Epic;
 import model.Subtask;
 import model.Task;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+ sprint_9-solution-http-api
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static java.util.Calendar.FEBRUARY;
+
+
+import java.util.ArrayList;
+
+
+ main
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest {
@@ -20,6 +27,7 @@ class FileBackedTaskManagerTest {
 
 
     @Test
+ sprint_9-solution-http-api
     void shouldBeAnEmptyObjectFromAnEmptyFile() throws IOException{
         FileBackedTaskManager manager = new FileBackedTaskManager(File.createTempFile("data", null));
         ArrayList<Task> tasks= manager.getAllTasks();
@@ -45,3 +53,16 @@ class FileBackedTaskManagerTest {
         assertEquals(manager.getTaskById(1),manager1.getTaskById(1), "Обьекты не совпадают");
 
 }}
+
+    void shouldBeAnEmptyObjectFromAnEmptyFile() throws IOException {
+        FileBackedTaskManager manager = new FileBackedTaskManager(File.createTempFile("task.csv", null));
+        ArrayList<Task> tasks = manager.getAllTasks();
+        ArrayList<Subtask> subtasks = manager.getAllSubtasks();
+        ArrayList<Epic> epics = manager.getAllEpics();
+        assertEquals(0, tasks.size(), "Обьект класса не пустой");
+        assertEquals(0, subtasks.size(), "Обьект класса не пустой");
+        assertEquals(0, epics.size(), "Обьект класса не пустой");
+    }
+
+
+} main

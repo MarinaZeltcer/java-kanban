@@ -85,6 +85,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 line = br.readLine();
             }
             line = br.readLine();
+ sprint_9-solution-http-api
             if (line != null && !line.isEmpty()) {
                 String[] split = line.split(",");
                 for (String str : split) {
@@ -98,6 +99,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     if (manager.epics.containsKey(key)) {
                         manager.historyManager.add(manager.epics.get(key));
                     }
+
+            String[] split = line.split(",");
+            for (String str : split) {
+                Integer key = Integer.parseInt(str);
+                if (manager.tasks.containsKey(key)) {
+                    manager.historyManager.add(manager.tasks.get(key));
+                }
+                if (manager.subtasks.containsKey(key)) {
+                    manager.historyManager.add(manager.subtasks.get(key));
+                }
+                if (manager.epics.containsKey(key)) {
+                    manager.historyManager.add(manager.epics.get(key));
+ main
                 }
             }
         } catch (IOException e) {
@@ -108,7 +122,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
     @Override
+ sprint_9-solution-http-api
     public Task createNewTask(Task task)throws RuntimeException {
+
+    public Task createNewTask(Task task) {
+ main
         Task newTask = super.createNewTask(task);
         save();
         return newTask;

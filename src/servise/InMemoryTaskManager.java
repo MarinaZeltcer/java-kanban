@@ -26,7 +26,11 @@ public class InMemoryTaskManager implements TaskManagerable {
     }
 
     @Override
+ sprint_9-solution-http-api
     public Task createNewTask(Task task) throws RuntimeException {
+
+    public Task createNewTask(Task task) {
+ main
         if (!intersectionAnyMatch(task)) {
             task.setId(generateId());
             tasks.put(task.getId(), task);
@@ -53,7 +57,11 @@ public class InMemoryTaskManager implements TaskManagerable {
     public void removeTaskById(Integer id) {
         prioritizedTasks.remove(getTaskById(id));
         historyManager.remove(id);
+ sprint_9-solution-http-api
         tasks.remove(id);
+
+        prioritizedTasks.remove(getTaskById(id));
+ main
     }
 
     @Override
@@ -70,6 +78,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void updateTask(Task task) {
+ sprint_9-solution-http-api
         Task reservTask = tasks.get(task.getId());
         prioritizedTasks.remove(reservTask);
         if ((!intersectionAnyMatch(task))) {
@@ -78,6 +87,11 @@ public class InMemoryTaskManager implements TaskManagerable {
         } else {
             tasks.put(reservTask.getId(), reservTask);
             prioritizedTasks.add(reservTask);
+
+        if ((intersectionAnyMatch(task))) {
+            tasks.put(task.getId(), task);
+        } else {
+ main
             throw new RuntimeException("Задачи пересекаются");
 
         }
@@ -126,11 +140,19 @@ public class InMemoryTaskManager implements TaskManagerable {
     }
 
     @Override
+ sprint_9-solution-http-api
     public Subtask createNewSubTask(Subtask subtask) throws RuntimeException{
         if (!intersectionAnyMatch(subtask)) {
             Epic epic = epics.get(subtask.getepicIds());
             if (epic == null) {
                throw new RuntimeException("Эпика с таким id нет.");
+
+    public Subtask createNewSubTask(Subtask subtask) {
+        if (!intersectionAnyMatch(subtask)) {
+            Epic epic = epics.get(subtask.getepicIds());
+            if (epic == null) {
+                return null;
+ main
             }
             subtask.setId(generateId());
             subtasks.put(subtask.getId(), subtask);
@@ -165,7 +187,11 @@ public class InMemoryTaskManager implements TaskManagerable {
         assignStartTime(epic);
         durationByEpic(epic.getId());
         historyManager.remove(id);
+ sprint_9-solution-http-api
 
+
+        prioritizedTasks.remove(getSubtaskById(id));
+ main
     }
 
     @Override
@@ -175,18 +201,27 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void updateSubtask(Subtask subtask) {
+ sprint_9-solution-http-api
         Subtask reservSubtask = subtasks.get(subtask.getId());
         prioritizedTasks.remove(reservSubtask);
         if (!intersectionAnyMatch(subtask)) {
             Epic epic = epics.get(subtask.getepicIds());
             subtasks.put(subtask.getId(), subtask);
             prioritizedTasks.add(subtask);
+
+        if (intersectionAnyMatch(subtask)) {
+            Epic epic = epics.get(subtask.getepicIds());
+            subtasks.put(subtask.getId(), subtask);
+ main
             assignStatusEpic(subtask.getepicIds());
             assignStartTime(epic);
             durationByEpic(subtask.getepicIds());
         } else {
+ sprint_9-solution-http-api
             subtasks.put(reservSubtask.getId(), reservSubtask);
             prioritizedTasks.add(reservSubtask);
+
+ main
             throw new RuntimeException("Задачи пересекаются");
 
         }
@@ -237,10 +272,13 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void assignStartTime(Epic epic) {
         ArrayList<Subtask> subtask = getAllSubtaskByEpic(epic.getId());
+ sprint_9-solution-http-api
         if (subtask.isEmpty()) {
             epic.setStartTime(LocalDateTime.MAX);
             return;
         }
+
+ main
         LocalDateTime startTime = subtask.get(0).getStartTime();
         for (int i = 1; i < subtask.size(); i++) {
             if (startTime.isAfter(subtask.get(i).getStartTime())) {
@@ -281,3 +319,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
 
 
+sprint_9-solution-http-api
+
+
+ main
