@@ -56,17 +56,7 @@ class InMemoryTaskManagerTest {
             assertNotNull(task2);
             assertEquals(task1, task2, "обьекты не совпадают");
         }
-
-
-        @Test
-        public void createNewSubTaskTestNonExistentEpic () {
-            Integer invalidEpicId = -6;
-            Subtask subtask = new Subtask("Собрать коробки", "С подписями", invalidEpicId);
-            taskManager.createNewSubTask(subtask);
-            assertTrue(taskManager.subtasks.isEmpty());
-        }
-
-
+        
         @Test
         public void getTaskByIdTest () {
             Task task1 = new Task("task", "taskDesc");

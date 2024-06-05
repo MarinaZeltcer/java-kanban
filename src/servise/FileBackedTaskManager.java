@@ -85,17 +85,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 line = br.readLine();
             }
             line = br.readLine();
-            String[] split = line.split(",");
-            for (String str : split) {
-                Integer key = Integer.parseInt(str);
-                if (manager.tasks.containsKey(key)) {
-                    manager.historyManager.add(manager.tasks.get(key));
-                }
-                if (manager.subtasks.containsKey(key)) {
-                    manager.historyManager.add(manager.subtasks.get(key));
-                }
-                if (manager.epics.containsKey(key)) {
-                    manager.historyManager.add(manager.epics.get(key));
+            if (line != null && !line.isEmpty()) {
+                String[] split = line.split(",");
+                for (String str : split) {
+                    Integer key = Integer.parseInt(str);
+                    if (manager.tasks.containsKey(key)) {
+                        manager.historyManager.add(manager.tasks.get(key));
+                    }
+                    if (manager.subtasks.containsKey(key)) {
+                        manager.historyManager.add(manager.subtasks.get(key));
+                    }
+                    if (manager.epics.containsKey(key)) {
+                        manager.historyManager.add(manager.epics.get(key));
+                    }
                 }
             }
         } catch (IOException e) {
@@ -106,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
     @Override
-    public Task createNewTask(Task task) {
+    public Task createNewTask(Task task)throws RuntimeException {
         Task newTask = super.createNewTask(task);
         save();
         return newTask;
@@ -158,7 +160,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Subtask createNewSubTask(Subtask subtask) {
+    public Subtask createNewSubTask(Subtask subtask) throws RuntimeException{
         Subtask newSubtask = super.createNewSubTask(subtask);
         save();
         return newSubtask;

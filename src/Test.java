@@ -16,7 +16,7 @@ public class Test {
         /*
          * Проверяем запись в файл.
          * */
-        TaskManagerable manager = new FileBackedTaskManager(new File("test.csv"));
+        TaskManagerable manager = new FileBackedTaskManager(new File("task.csv"));
 
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.", Duration.ofMinutes(10),LocalDateTime.of(2222, FEBRUARY, 2, 22, 22));
         manager.createNewTask(task);

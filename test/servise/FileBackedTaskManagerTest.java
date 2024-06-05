@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static java.util.Calendar.FEBRUARY;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileBackedTaskManagerTest {
@@ -18,7 +21,7 @@ class FileBackedTaskManagerTest {
 
     @Test
     void shouldBeAnEmptyObjectFromAnEmptyFile() throws IOException{
-        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(),File.createTempFile("data", null));
+        FileBackedTaskManager manager = new FileBackedTaskManager(File.createTempFile("data", null));
         ArrayList<Task> tasks= manager.getAllTasks();
         ArrayList<Subtask> subtasks= manager.getAllSubtasks();
         ArrayList<Epic> epics= manager.getAllEpics();
@@ -29,17 +32,16 @@ class FileBackedTaskManagerTest {
 
     @Test
     void writingAndReadingAFileTest() throws IOException {
-        File file = new File("data");
-        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory(),file);
 
-        Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.");
+        FileBackedTaskManager manager = new FileBackedTaskManager(new File("task.csv"));
+
+        Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.", Duration.ofMinutes(10), LocalDateTime.of(2222, FEBRUARY, 2, 22, 22));
         manager.createNewTask(task);
         Epic epic = new Epic("Переезд.", "Сьехать в свой дом.");
         manager.createNewEpic(epic);
-        Subtask subtask = new Subtask("Собрать коробки", "С подписями", epic.getId());
+        Subtask subtask = new Subtask("Собрать коробки", "С подписями",Duration.ofMinutes(5), LocalDateTime.of(2221, FEBRUARY, 16, 17, 22), epic.getId());
         manager.createNewSubTask(subtask);
-        manager.save();
-        FileBackedTaskManager  manager1=FileBackedTaskManager.loadFromFile("data");
+        FileBackedTaskManager  manager1=FileBackedTaskManager.loadFromFile("task.csv");
         assertEquals(manager.getTaskById(1),manager1.getTaskById(1), "Обьекты не совпадают");
 
 }}
