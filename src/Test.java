@@ -21,7 +21,7 @@ public class Test {
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.", Duration.ofMinutes(10),LocalDateTime.of(2222, FEBRUARY, 2, 22, 22));
         manager.createNewTask(task);
 
-        System.out.println(task.getEndTime());
+System.out.println(task.getEndTime());
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км",Duration.ofMinutes(15),LocalDateTime.of(2222, FEBRUARY, 15, 22, 22));
         manager.createNewTask(task2);
 
@@ -58,11 +58,11 @@ public class Test {
 
         System.out.println("\n\n");
 
-        System.out.println(restoredManager.getAllTasks());
-        System.out.println(restoredManager.getAllEpics());
-        System.out.println(restoredManager.getAllSubtasks());
-        System.out.println(restoredManager.getHistory());
-        System.out.println("\n");
-        System.out.println(manager.getPrioritizedTasks());
+            System.out.println(restoredManager.getAllTasks());
+            System.out.println(restoredManager.getAllEpics());
+            System.out.println(restoredManager.getAllSubtasks());
+            System.out.println(restoredManager.getHistory());
+            System.out.println("\n");
+            System.out.println(manager.getPrioritizedTasks());
     }
 }
