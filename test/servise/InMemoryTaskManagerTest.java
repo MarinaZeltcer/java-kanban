@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static java.util.Calendar.FEBRUARY;
@@ -56,7 +55,15 @@ class InMemoryTaskManagerTest {
             assertNotNull(task2);
             assertEquals(task1, task2, "обьекты не совпадают");
         }
-        
+
+    @Test
+    public void createNewSubTaskTestNonExistentEpic(){
+        Integer invalidEpicId = -6;
+        Subtask subtask = new Subtask("Собрать коробки", "С подписями", invalidEpicId);
+        assertThrows(RuntimeException.class, ()->taskManager.createNewSubTask(subtask));
+        assertTrue(taskManager.subtasks.isEmpty());
+    }
+
         @Test
         public void getTaskByIdTest () {
             Task task1 = new Task("task", "taskDesc");
