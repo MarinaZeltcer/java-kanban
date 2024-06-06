@@ -26,7 +26,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     }
 
     @Override
-    public Task createNewTask(Task task) {
+    public Task createNewTask(Task task) throws RuntimeException {
         if (!intersectionAnyMatch(task)) {
             task.setId(generateId());
             tasks.put(task.getId(), task);
@@ -45,14 +45,15 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void removeAllTask() {
+        tasks.values().forEach(task -> prioritizedTasks.remove(task));
         tasks.clear();
     }
 
     @Override
     public void removeTaskById(Integer id) {
-        tasks.remove(id);
-        historyManager.remove(id);
         prioritizedTasks.remove(getTaskById(id));
+        historyManager.remove(id);
+        tasks.remove(id);
     }
 
     @Override
@@ -69,9 +70,14 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void updateTask(Task task) {
-        if ((intersectionAnyMatch(task))) {
+        Task reservTask = tasks.get(task.getId());
+        prioritizedTasks.remove(reservTask);
+        if ((!intersectionAnyMatch(task))) {
             tasks.put(task.getId(), task);
+            prioritizedTasks.add(task);
         } else {
+            tasks.put(reservTask.getId(), reservTask);
+            prioritizedTasks.add(reservTask);
             throw new RuntimeException("Задачи пересекаются");
 
         }
@@ -87,6 +93,7 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void removeAllEpic() {
         epics.clear();
+        subtasks.values().forEach(subtask -> prioritizedTasks.remove(subtask));
         subtasks.clear();
     }
 
@@ -119,11 +126,11 @@ public class InMemoryTaskManager implements TaskManagerable {
     }
 
     @Override
-    public Subtask createNewSubTask(Subtask subtask) {
+    public Subtask createNewSubTask(Subtask subtask) throws RuntimeException{
         if (!intersectionAnyMatch(subtask)) {
             Epic epic = epics.get(subtask.getepicIds());
             if (epic == null) {
-                return null;
+               throw new RuntimeException("Эпика с таким id нет.");
             }
             subtask.setId(generateId());
             subtasks.put(subtask.getId(), subtask);
@@ -142,6 +149,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void removeAllSubTask() {
+        subtasks.values().forEach(subtask -> prioritizedTasks.remove(subtask));
         subtasks.clear();
         epics.values().forEach(epic -> epic.getSubtaskId().clear());
 
@@ -149,6 +157,7 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void removeSubTaskById(Integer id) {
+        prioritizedTasks.remove(getSubtaskById(id));
         Subtask subtask = subtasks.remove(id);
         Epic epic = epics.get(subtask.getepicIds());
         epic.removeSubtask(subtask);
@@ -156,7 +165,7 @@ public class InMemoryTaskManager implements TaskManagerable {
         assignStartTime(epic);
         durationByEpic(epic.getId());
         historyManager.remove(id);
-        prioritizedTasks.remove(getSubtaskById(id));
+
     }
 
     @Override
@@ -166,13 +175,18 @@ public class InMemoryTaskManager implements TaskManagerable {
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if (intersectionAnyMatch(subtask)) {
+        Subtask reservSubtask = subtasks.get(subtask.getId());
+        prioritizedTasks.remove(reservSubtask);
+        if (!intersectionAnyMatch(subtask)) {
             Epic epic = epics.get(subtask.getepicIds());
             subtasks.put(subtask.getId(), subtask);
+            prioritizedTasks.add(subtask);
             assignStatusEpic(subtask.getepicIds());
             assignStartTime(epic);
             durationByEpic(subtask.getepicIds());
         } else {
+            subtasks.put(reservSubtask.getId(), reservSubtask);
+            prioritizedTasks.add(reservSubtask);
             throw new RuntimeException("Задачи пересекаются");
 
         }
@@ -223,6 +237,10 @@ public class InMemoryTaskManager implements TaskManagerable {
     @Override
     public void assignStartTime(Epic epic) {
         ArrayList<Subtask> subtask = getAllSubtaskByEpic(epic.getId());
+        if (subtask.isEmpty()) {
+            epic.setStartTime(LocalDateTime.MAX);
+            return;
+        }
         LocalDateTime startTime = subtask.get(0).getStartTime();
         for (int i = 1; i < subtask.size(); i++) {
             if (startTime.isAfter(subtask.get(i).getStartTime())) {
@@ -260,7 +278,6 @@ public class InMemoryTaskManager implements TaskManagerable {
         return prioritizedTasks.stream().anyMatch(taskFromSet -> isTimeIntersection(taskFromSet, newTask));
     }
 }
-
 
 
 

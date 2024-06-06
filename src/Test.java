@@ -13,15 +13,13 @@ import static java.util.Calendar.FEBRUARY;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        /*
-         * Проверяем запись в файл.
-         * */
+
         TaskManagerable manager = new FileBackedTaskManager(new File("task.csv"));
 
         Task task = new Task("Похудеть к лету.", "Сбросить 5 кг.", Duration.ofMinutes(10),LocalDateTime.of(2222, FEBRUARY, 2, 22, 22));
         manager.createNewTask(task);
 
-        System.out.println(task.getEndTime());
+System.out.println(task.getEndTime());
         Task task2 = new Task("Открыть лыжный сезон.", "Освоить трассу  10 км",Duration.ofMinutes(15),LocalDateTime.of(2222, FEBRUARY, 15, 22, 22));
         manager.createNewTask(task2);
 
@@ -51,18 +49,16 @@ public class Test {
         manager.getSubtaskById(7);
         manager.getTaskById(2);
 
-        /*
-         * Проверяем чтение из файла.
-         * */
+
         TaskManagerable restoredManager = FileBackedTaskManager.loadFromFile("task.csv");
 
         System.out.println("\n\n");
 
-        System.out.println(restoredManager.getAllTasks());
-        System.out.println(restoredManager.getAllEpics());
-        System.out.println(restoredManager.getAllSubtasks());
-        System.out.println(restoredManager.getHistory());
-        System.out.println("\n");
-        System.out.println(manager.getPrioritizedTasks());
+            System.out.println(restoredManager.getAllTasks());
+            System.out.println(restoredManager.getAllEpics());
+            System.out.println(restoredManager.getAllSubtasks());
+            System.out.println(restoredManager.getHistory());
+            System.out.println("\n");
+            System.out.println(manager.getPrioritizedTasks());
     }
 }
