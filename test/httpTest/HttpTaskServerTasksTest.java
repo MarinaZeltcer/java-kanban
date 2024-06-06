@@ -52,7 +52,7 @@ public class HttpTaskServerTasksTest {
         String taskJson = gson.toJson(task);
         // отправляем post запрос и получаем ответ
         HttpResponse<String> postResponse = sendPostRequestAndGetResponse(taskJson, "http://localhost:8080/tasks");
-        // проверяем, что ответ был получен с правильным кодом
+
         assertNotNull(postResponse);
         assertEquals(201, postResponse.statusCode());
         List<Task> tasksFromManager = manager.getAllTasks();
